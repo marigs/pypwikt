@@ -10,10 +10,6 @@ from wikitools import api
 import pypwikt as pw
 from pypwikt import wiktcfg
 
-def get_lang(lang):
-    return {'en': pw.Lang.ENGLISH,
-            'pl': pw.Lang.POLISH}[lang]
-
 def main():
     parser = ArgumentParser()
     parser.add_argument("-w", "--word", required=True, type=str)
@@ -21,7 +17,9 @@ def main():
     parser.add_argument("-o", "--orig", required=True, type=str)
     args = parser.parse_args()
 
-    site = wiki.Wiki("http://en.wiktionary.org/w/api.php")
+    parser = wiktcfg.WiktionaryCfg(args.lang, args.orig)
+
+    site = wiki.Wiki(parser.get_url_wikt())
     params = {'action':'query', 'titles': args.word,
             'rvprop': 'content|ids|timestamp',
             'prop': 'revisions'}
@@ -36,12 +34,8 @@ def main():
     rev_ts = p['revisions'][0]['timestamp']
     text = p['revisions'][0]['*']
 
-    wikilang = get_lang(args.lang)
-    orig_lang = get_lang(args.orig)
-    parser = wiktcfg.WiktionaryCfg(wikilang, orig_lang)
 
-    page = parser.get_page(unicode(args.word, 'utf-8'), rev_id, rev_ts,
-            text, orig_lang)
+    page = parser.get_page(unicode(args.word, 'utf-8'), rev_id, rev_ts, text)
 
     w = page.get_word()
     if w.has_meanings():
