@@ -61,10 +61,6 @@ class Page(object):
                         raise
                     en_part_of_speach = self.get_en_part_of_speech(section[1])
                     word.set_part_of_speech(en_part_of_speach, meanings)
-                elif self.is_non_used_section(section[1]):
-                    pass
-                else:
-                    raise KeyError("Unknown section: \"" + section[1] + '\" (' + word.word + ')')
         return word
 
     @staticmethod

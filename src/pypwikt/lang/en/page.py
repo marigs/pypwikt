@@ -9,23 +9,9 @@ from pypwikt.word import EN_PART_OF_SPEECH, Meaning
 __author__ = 'marigs'
 
 class Page(page.Page):
-    section_re = re.compile(r'^[=]+([\w ]+)[=]+$', re.M)
+    section_re = re.compile(r'^[=]+([-\w ]+)[=]+$', re.M)
 
-    non_used = ['anagrams', 'translations', 'synonyms', 'external links',
-                'alternative forms', 'references', 'statistics', 'see also',
-                'usage notes', 'quotations', 'interjection',
-                'antonyms', 'related terms', 'hyponyms', 'etymology', 'letter', 'number',
-                'symbol', 'abbreviation', 'abbreviations', 'proper noun', 'descendants',
-                'coordinate terms', 'hypernyms', 'prefix', 'suffix', 'declension',
-                'determiner', 'numeral', 'acronym', 'holonyms', 'initialism',
-                'conjugation', 'meronyms', 'particle', 'troponyms', 'contraction',
-                'prepositional phrase', 'inflection', 'gerund', 'expressions', 'locutions']
-
-    non_used_starts = ['etymology', 'phrase', 'determiner', 'cardinal', 'proverb',
-                        'derived']
-
-    PART_OF_SPEECH = ['noun', 'verb', 'participle', 'article', 'pronoun', 'preposition', 'adverb', 'conjunction',
-                      'adjective'] #TODO: copy of EN_PART_OF_SPEECH
+    PART_OF_SPEECH = EN_PART_OF_SPEECH
 
     def __init__(self, title, rev_id, rev_ts, text, orig_lang):
         self.orig_section_name = self._get_orig_section_name(orig_lang)
@@ -50,10 +36,6 @@ class Page(page.Page):
 
     def is_pronunce_section(self, section):
         return section  == 'pronunciation'
-
-    def is_non_used_section(self, section):
-        return (section in self.non_used or
-                reduce(operator.or_, map(lambda x: section.startswith(x), self.non_used_starts)))
 
     def _parse_part_of_speech(self, content):
         ret = []
