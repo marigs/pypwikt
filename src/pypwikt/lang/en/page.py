@@ -21,8 +21,7 @@ class Page(page.Page):
         ret = {pw.Lang.ENGLISH: u'english',
                 pw.Lang.POLISH: u'polish'}.get(orig_lang, None)
         if not ret:
-            raise NotImplemented()
-
+            raise NotImplementedError()
         return ret
 
     def section_level(self, txt):

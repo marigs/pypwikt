@@ -3,6 +3,7 @@ __author__ = 'marigs'
 
 import pypwikt as pw
 import lang.en.page
+import lang.pl.page
 
 _iso2lcode_enum = {'en': pw.Lang.ENGLISH,
                    'pl': pw.Lang.POLISH}
@@ -21,4 +22,6 @@ class WiktionaryCfg(object):
     def get_page(self, title, rev_id, rev_ts, text):
         if self.wiktdict == pw.Lang.ENGLISH:
             return lang.en.page.Page(title, rev_id, rev_ts, text, self.orig_lang)
+        elif self.wiktdict == pw.Lang.POLISH:
+            return lang.pl.page.Page(title, rev_id, rev_ts, text, self.orig_lang)
         raise NotImplemented()
